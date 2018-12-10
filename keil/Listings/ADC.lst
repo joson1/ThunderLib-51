@@ -1,0 +1,140 @@
+C51 COMPILER V9.56.0.0   ADC                                                               12/10/2018 19:39:22 PAGE 1   
+
+
+C51 COMPILER V9.56.0.0, COMPILATION OF MODULE ADC
+OBJECT MODULE PLACED IN .\Objects\ADC.obj
+COMPILER INVOKED BY: D:\Keil_v5\C51\BIN\C51.EXE ..\src\ADC.c OPTIMIZE(8,SPEED) INCDIR(..\inc;..\..\ThunderLib) DEBUG OBJ
+                    -ECTEXTEND PRINT(.\Listings\ADC.lst) OBJECT(.\Objects\ADC.obj)
+
+line level    source
+
+   1          #include "ADC.h"
+   2          #include "common.h"
+   3          #include "GPIO.h"
+   4          #include "MATH.h"
+   5          
+   6          
+   7          /**********
+   8          ch      pin
+   9          0       P10
+  10          1       P11
+  11          2       P12
+  12          3       P13
+  13          4       P14
+  14          5       P15
+  15          6       P16
+  16          7       P17
+  17          **********/
+  18          
+  19          unsigned int ADC_read(unsigned char ch)
+  20          {
+  21   1      
+  22   1          unsigned int ADC;
+  23   1      
+  24   1          
+  25   1          switch (ch)
+  26   1          {
+  27   2              case 0:pin1Mode(0,INPUT);break;
+  28   2              case 1:pin1Mode(1,INPUT);break;
+  29   2              case 2:pin1Mode(2,INPUT);break;
+  30   2              case 3:pin1Mode(3,INPUT);break;
+  31   2              case 4:pin1Mode(4,INPUT);break;
+  32   2              case 5:pin1Mode(5,INPUT);break;
+  33   2              case 6:pin1Mode(6,INPUT);break;
+  34   2              case 7:pin1Mode(7,INPUT);break;
+  35   2              
+  36   2          
+  37   2              default:
+  38   2                  break;
+  39   2          }
+  40   1      
+  41   1          ADC_CONTR = 0xD0|ch;
+  42   1          ADCCFG = 0xff;
+  43   1          while(!ADC_isConverted());
+  44   1      
+  45   1          ADC = ADC_RES;
+  46   1          ADC <<= 8;
+  47   1          ADC |= ADC_RESL;
+  48   1          
+  49   1          switch (ch)
+  50   1          {
+  51   2              case 0:pin1Mode(0,IO);break;
+  52   2              case 1:pin1Mode(1,IO);break;
+  53   2              case 2:pin1Mode(2,IO);break;
+  54   2              case 3:pin1Mode(3,IO);break;
+C51 COMPILER V9.56.0.0   ADC                                                               12/10/2018 19:39:22 PAGE 2   
+
+  55   2              case 4:pin1Mode(4,IO);break;
+  56   2              case 5:pin1Mode(5,IO);break;
+  57   2              case 6:pin1Mode(6,IO);break;
+  58   2              case 7:pin1Mode(7,IO);break;
+  59   2              
+  60   2      
+  61   2              default:
+  62   2                  break;
+  63   2          }
+  64   1          return ADC;
+  65   1      }
+  66          
+  67          unsigned long int ADC_getVcc()
+  68          {
+  69   1          unsigned long xdata temp;
+  70   1          int xdata BGV;
+  71   1          unsigned int xdata i;
+  72   1          unsigned long xdata res;
+  73   1      
+  74   1          BGV = *((int idata*)0xef);
+  75   1          for(i=0;i<8;i++)
+  76   1          {
+  77   2              res+=ADC_read(15);
+  78   2          }
+  79   1          res >>=3;
+  80   1          
+  81   1          temp = 8*BGV;
+  82   1          temp*=8;
+  83   1          temp*=8;
+  84   1          temp*=8;
+  85   1          temp-=BGV;
+  86   1          //temp /=;
+  87   1      
+  88   1          res/=20;
+  89   1          temp/=res;
+  90   1          temp/=20;
+  91   1              //vcc = temp/res;
+  92   1          return temp;
+  93   1      }
+  94          
+  95          unsigned long int ADC_readVoltageFrom(unsigned char ch)
+  96          {
+  97   1          unsigned long  temp;
+  98   1          unsigned long  vcc;
+  99   1          unsigned char  i;
+ 100   1          for(i=0;i<8;i++)
+ 101   1          {
+ 102   2              temp+=ADC_read(ch);
+ 103   2          }
+ 104   1          temp>>=3;
+ 105   1          vcc=ADC_getVcc();
+ 106   1      
+ 107   1          temp/=vcc;
+ 108   1      
+ 109   1          return temp;
+ 110   1      
+ 111   1      
+ 112   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    892    ----
+C51 COMPILER V9.56.0.0   ADC                                                               12/10/2018 19:39:22 PAGE 3   
+
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----      12
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       9
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

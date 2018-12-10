@@ -1,0 +1,176 @@
+C51 COMPILER V9.56.0.0   PWM                                                               12/10/2018 19:39:24 PAGE 1   
+
+
+C51 COMPILER V9.56.0.0, COMPILATION OF MODULE PWM
+OBJECT MODULE PLACED IN .\Objects\Pwm.obj
+COMPILER INVOKED BY: D:\Keil_v5\C51\BIN\C51.EXE ..\src\Pwm.c OPTIMIZE(8,SPEED) INCDIR(..\inc;..\..\ThunderLib) DEBUG OBJ
+                    -ECTEXTEND PRINT(.\Listings\Pwm.lst) OBJECT(.\Objects\Pwm.obj)
+
+line level    source
+
+   1          #include "Pwm.h"
+   2          
+   3          //duty 1-32767
+   4          void Pwm_begin(unsigned char ch,unsigned long freq,unsigned char duty)
+   5          {
+   6   1          unsigned int temp;
+   7   1          temp = 1500000UL/freq;
+   8   1          switch(ch)
+   9   1          {
+  10   2              case 0:
+  11   2                          PWMC    = temp;
+  12   2                          PWMCKS  = 0x0f;
+  13   2                          PWM0T1  = temp/100*duty;
+  14   2                          PWM0T2  = 1;
+  15   2                          //PWM0CR  = 0x90;
+  16   2                          PWM0CR = 0x00;
+  17   2                          PWMCR   = 0x80;
+  18   2                          break;
+  19   2              case 1:
+  20   2                          PWMC    = temp;
+  21   2                          PWMCKS  = 0x0f;
+  22   2                          PWM1T1  = temp/100*duty;
+  23   2                          PWM1T2  = 1;
+  24   2                          PWM1CR  = 0x90;
+  25   2                          PWMCR   = 0x80;
+  26   2                          break;
+  27   2              case 2:
+  28   2                          PWMC    = temp;
+  29   2                          PWMCKS  = 0x0f;
+  30   2                          PWM2T1  = temp/100*duty;
+  31   2                          PWM2T2  = 1;
+  32   2                          PWM2CR  = 0x90;
+  33   2                          PWMCR   = 0x80;
+  34   2                          break;
+  35   2              case 3:
+  36   2                          PWMC    = temp;
+  37   2                          PWMCKS  = 0x0f;
+  38   2                          PWM3T1  = temp/100*duty;
+  39   2                          PWM3T2  = 1;
+  40   2                          PWM3CR  = 0x90;
+  41   2                          PWMCR   = 0x80;
+  42   2                          break;
+  43   2              case 4:
+  44   2                          PWMC    = temp;
+  45   2                          PWMCKS  = 0x0f;
+  46   2                          PWM4T1  = temp/100*duty;
+  47   2                          PWM4T2  = 1;
+  48   2                          PWM4CR  = 0x90;
+  49   2                          PWMCR   = 0x80;
+  50   2                          break;
+  51   2              case 5:
+  52   2                          PWMC    = temp;
+  53   2                          PWMCKS  = 0x0f;
+  54   2                          PWM5T1  = temp/100*duty;
+C51 COMPILER V9.56.0.0   PWM                                                               12/10/2018 19:39:24 PAGE 2   
+
+  55   2                          PWM5T2  = 1;
+  56   2                          PWM5CR  = 0x90;
+  57   2                          PWMCR   = 0x80;
+  58   2                          break; 
+  59   2              case 6:
+  60   2                          PWMC    = temp;
+  61   2                          PWMCKS  = 0x0f;
+  62   2                          PWM6T1  = temp/100*duty;
+  63   2                          PWM6T2  = 1;
+  64   2                          PWM6CR  = 0x90;
+  65   2                          PWMCR   = 0x80;
+  66   2                          break;
+  67   2              case 7:
+  68   2                          PWMC    = temp;
+  69   2                          PWMCKS  = 0x0f;
+  70   2                          PWM7T1  = temp/100*duty;
+  71   2                          PWM7T2  = 1;
+  72   2                          PWM7CR  = 0x90;
+  73   2                          PWMCR   = 0x80;
+  74   2                          break;                    
+  75   2      
+  76   2              default :break;
+  77   2      
+  78   2          }
+  79   1      
+  80   1      }
+  81          
+  82          void Pwm_end(char ch)
+  83          {
+  84   1      
+  85   1          switch(ch)
+  86   1          {
+  87   2              case 0:
+  88   2                          
+  89   2                          PWM0T1  = 0;
+  90   2                          PWM0T2  = 0;
+  91   2                          PWM0CR  = 0;
+  92   2                          
+  93   2                          break;
+  94   2              case 1:
+  95   2                          
+  96   2                          PWM1T1  = 0;
+  97   2                          PWM1T2  = 0;
+  98   2                          PWM1CR  = 0;
+  99   2                          
+ 100   2                          break;
+ 101   2              case 2:
+ 102   2                          
+ 103   2                          PWM2T1  = 0;
+ 104   2                          PWM2T2  = 0;
+ 105   2                          PWM2CR  = 0;
+ 106   2                          
+ 107   2                          break;
+ 108   2              case 3:
+ 109   2                          
+ 110   2                          PWM3T1  = 0;
+ 111   2                          PWM3T2  = 0;
+ 112   2                          PWM3CR  = 0;
+ 113   2                          
+ 114   2                          break;
+ 115   2              case 4:
+ 116   2                          
+C51 COMPILER V9.56.0.0   PWM                                                               12/10/2018 19:39:24 PAGE 3   
+
+ 117   2                          PWM4T1  = 0;
+ 118   2                          PWM4T2  = 0;
+ 119   2                          PWM4CR  = 0;
+ 120   2                          
+ 121   2                          break;
+ 122   2              case 5:
+ 123   2                          
+ 124   2                          PWM5T1  = 0;
+ 125   2                          PWM5T2  = 0;
+ 126   2                          PWM5CR  = 0;
+ 127   2                          
+ 128   2                          break; 
+ 129   2              case 6:
+ 130   2                          
+ 131   2                          PWM6T1  = 0;
+ 132   2                          PWM6T2  = 0;
+ 133   2                          PWM6CR  = 0;
+ 134   2                          
+ 135   2                          break;
+ 136   2              case 7:
+ 137   2                          
+ 138   2                          PWM7T1  = 0;
+ 139   2                          PWM7T2  = 0;
+ 140   2                          PWM7CR  = 0;
+ 141   2                          
+ 142   2                          break;                    
+ 143   2      
+ 144   2              default : PWMCR = 0;
+ 145   2      
+ 146   2          }
+ 147   1      
+ 148   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    519    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       6
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

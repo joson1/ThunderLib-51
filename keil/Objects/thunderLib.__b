@@ -1,0 +1,8 @@
+TRANSFER
+".\Objects\ADC.obj",
+".\Objects\common.obj",
+".\Objects\IIC.obj",
+".\Objects\Pwm.obj",
+".\Objects\Timer.obj",
+".\Objects\Uart.obj" 
+TO ".\Objects\thunderLib.LIB"

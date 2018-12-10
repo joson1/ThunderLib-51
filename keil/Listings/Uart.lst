@@ -1,0 +1,191 @@
+C51 COMPILER V9.56.0.0   UART                                                              12/10/2018 19:39:25 PAGE 1   
+
+
+C51 COMPILER V9.56.0.0, COMPILATION OF MODULE UART
+OBJECT MODULE PLACED IN .\Objects\Uart.obj
+COMPILER INVOKED BY: D:\Keil_v5\C51\BIN\C51.EXE ..\src\Uart.c OPTIMIZE(8,SPEED) INCDIR(..\inc;..\..\ThunderLib) DEBUG OB
+                    -JECTEXTEND PRINT(.\Listings\Uart.lst) OBJECT(.\Objects\Uart.obj)
+
+line level    source
+
+   1          #include "Uart.h"
+   2          #include "common.h"
+   3          #include "STDIO.H"
+   4          
+   5          /************************
+   6              Uart  Txd 3.1 Rxd 3.0
+   7              Uart2 Txd 4.2 Rxd 4.0
+   8              SBUF 和 S2BUF 是串口收发缓冲区
+   9          *************************/
+  10          
+  11          bit busy  = 0;
+  12          bit busy2 = 0;
+  13          
+  14          unsigned char xdata uart_rx[UART_BUF_SIZE] = 0;
+  15          unsigned char xdata uart_rx_cnt = 0;
+  16          unsigned char xdata uart_rx_rp = 0;
+  17          unsigned char xdata uart_rx_wp = 0;
+  18          
+  19          
+  20          char xdata buffer2[UART_BUF_SIZE] = 0;
+  21          char xdata Wptr2 = 0;
+  22          char xdata Rptr2 = 0;
+  23          
+  24          char putchar(char c)
+  25          {
+  26   1          Uart_SendChr(c);
+  27   1          return c;
+  28   1      }
+  29          
+  30          char _getkey (void)
+  31          {
+  32   1          return Uart_getChar();
+  33   1      }
+  34          
+  35          char Uart_getChar()
+  36          {
+  37   1          unsigned char ch;
+  38   1          while(uart_rx_cnt == 0);
+  39   1          ES = 0;
+  40   1          ch = uart_rx[uart_rx_rp];
+  41   1          uart_rx_rp = (uart_rx_rp + 1) % UART_BUF_SIZE;
+  42   1          uart_rx_cnt--;
+  43   1          ES = 1;
+  44   1              return ch;
+  45   1      
+  46   1      }
+  47          
+  48          
+  49          void Uart_begin(unsigned long rate)
+  50          {
+  51   1          unsigned long xdata BRT = 65536-FOSC/rate/4;
+  52   1      
+  53   1          SCON = 0x50;
+  54   1          TMOD = 0x00;
+C51 COMPILER V9.56.0.0   UART                                                              12/10/2018 19:39:25 PAGE 2   
+
+  55   1          TL1 = BRT;
+  56   1          TH1 = BRT>>8;
+  57   1          TR1 = 1;
+  58   1          AUXR = 0x40;
+  59   1      
+  60   1      
+  61   1          busy = 0;
+  62   1          ES = 1;
+  63   1          EA = 1;
+  64   1      
+  65   1      }
+  66          
+  67          void Uart_SendChr(char dat)
+  68          {
+  69   1          while(busy);
+  70   1          busy = 1;
+  71   1          SBUF = dat;
+  72   1      }
+  73          
+  74          void Uart_print(char* p)
+  75          {
+  76   1          while(*p)
+  77   1          {
+  78   2              Uart_SendChr(*p++);
+  79   2          }
+  80   1      
+  81   1      }
+  82          
+  83          void Uart_println(char* p)
+  84          {
+  85   1          Uart_print(p);
+  86   1          Uart_print("\r\n");
+  87   1      }
+  88          
+  89          void UartIsr() interrupt 4
+  90          {
+  91   1          ES=0;
+  92   1          if(TI)//发送中断
+  93   1          {
+  94   2              TI = 0;
+  95   2              busy = 0;
+  96   2          }
+  97   1          if(RI)//接收中断
+  98   1          {
+  99   2              RI=0;//接收中断信号清零，表示将继续接收
+ 100   2                      if(uart_rx_cnt < UART_BUF_SIZE)
+ 101   2                      {
+ 102   3                              uart_rx[uart_rx_wp] = SBUF;
+ 103   3                              uart_rx_wp = (uart_rx_wp + 1) % UART_BUF_SIZE;
+ 104   3                              uart_rx_cnt++;
+ 105   3                      }
+ 106   2      
+ 107   2      
+ 108   2          }
+ 109   1          ES =1;
+ 110   1      }
+ 111          
+ 112          
+ 113          void Uart2_begin(int rate)
+ 114          {
+ 115   1          unsigned long xdata BRT = 65536-FOSC/rate/4;
+ 116   1      
+C51 COMPILER V9.56.0.0   UART                                                              12/10/2018 19:39:25 PAGE 3   
+
+ 117   1          S2CON = 0x50;
+ 118   1          T2L = BRT;
+ 119   1          T2H = BRT>>8;
+ 120   1          IE2 = 0x01;
+ 121   1          AUXR = 0x40;
+ 122   1          Wptr2 = 0;
+ 123   1          Rptr2 = 0;
+ 124   1          busy2 = 0;
+ 125   1          EA = 1;
+ 126   1      
+ 127   1      }
+ 128          void Uart2_SendChr(char dat)
+ 129          {
+ 130   1          while(busy2);
+ 131   1          busy2 = 1;
+ 132   1          S2BUF = dat;
+ 133   1      }
+ 134          
+ 135          void Uart2_print(char* p)
+ 136          {
+ 137   1          while(*p)
+ 138   1          {
+ 139   2              Uart2_SendChr(*p++);
+ 140   2          }
+ 141   1      
+ 142   1      }
+ 143          void Uart2_println(char* p)
+ 144          {
+ 145   1          Uart2_print(p);
+ 146   1          Uart2_print("\r\n");
+ 147   1      }
+ 148          
+ 149          void Uart2Isr() interrupt 8
+ 150          {
+ 151   1          if(S2CON & 0x02)
+ 152   1          {
+ 153   2              S2CON &= ~0x02;
+ 154   2              busy2 = 0;
+ 155   2          }
+ 156   1          if(S2CON & 0x01)    
+ 157   1          {
+ 158   2              S2CON &= 0xfe;
+ 159   2              // if(Wptr > UART_BUF_SIZE) Wptr = 0;
+ 160   2              // buffer2[Wptr2++]=S2BUF;
+ 161   2      
+ 162   2          }
+ 163   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    471    ----
+   CONSTANT SIZE    =      3    ----
+   XDATA SIZE       =     37       8
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       7
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      2    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
