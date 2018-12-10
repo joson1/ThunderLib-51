@@ -20,6 +20,8 @@ ThunderLib2是为ThunderBoard(STC单片机系列)编写的库，易于入门，降低开发时间，你不
 
 
 ![](/img/2.png)
+
+
 4. 包含头文件 Thunder.h即可使用
 
 
