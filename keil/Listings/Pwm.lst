@@ -1,10 +1,10 @@
-C51 COMPILER V9.56.0.0   PWM                                                               12/10/2018 19:39:24 PAGE 1   
+C51 COMPILER V9.56.0.0   PWM                                                               12/16/2018 16:27:55 PAGE 1   
 
 
 C51 COMPILER V9.56.0.0, COMPILATION OF MODULE PWM
 OBJECT MODULE PLACED IN .\Objects\Pwm.obj
-COMPILER INVOKED BY: D:\Keil_v5\C51\BIN\C51.EXE ..\src\Pwm.c OPTIMIZE(8,SPEED) INCDIR(..\inc;..\..\ThunderLib) DEBUG OBJ
-                    -ECTEXTEND PRINT(.\Listings\Pwm.lst) OBJECT(.\Objects\Pwm.obj)
+COMPILER INVOKED BY: D:\Keil_v5\C51\BIN\C51.EXE ..\src\Pwm.c OPTIMIZE(8,SPEED) INCDIR(..\inc;..\..\ThunderLib) DEFINE(ST
+                    -C_Y1,FOSC_11059200) DEBUG OBJECTEXTEND PRINT(.\Listings\Pwm.lst) OBJECT(.\Objects\Pwm.obj)
 
 line level    source
 
@@ -62,7 +62,7 @@ line level    source
   52   2                          PWMC    = temp;
   53   2                          PWMCKS  = 0x0f;
   54   2                          PWM5T1  = temp/100*duty;
-C51 COMPILER V9.56.0.0   PWM                                                               12/10/2018 19:39:24 PAGE 2   
+C51 COMPILER V9.56.0.0   PWM                                                               12/16/2018 16:27:55 PAGE 2   
 
   55   2                          PWM5T2  = 1;
   56   2                          PWM5CR  = 0x90;
@@ -126,7 +126,7 @@ line level    source
  114   2                          break;
  115   2              case 4:
  116   2                          
-C51 COMPILER V9.56.0.0   PWM                                                               12/10/2018 19:39:24 PAGE 3   
+C51 COMPILER V9.56.0.0   PWM                                                               12/16/2018 16:27:55 PAGE 3   
 
  117   2                          PWM4T1  = 0;
  118   2                          PWM4T2  = 0;

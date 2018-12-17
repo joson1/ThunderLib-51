@@ -1,69 +1,106 @@
-C51 COMPILER V9.56.0.0   COMMON                                                            12/10/2018 19:39:23 PAGE 1   
+C51 COMPILER V9.56.0.0   COMMON                                                            12/16/2018 16:27:55 PAGE 1   
 
 
 C51 COMPILER V9.56.0.0, COMPILATION OF MODULE COMMON
 OBJECT MODULE PLACED IN .\Objects\common.obj
-COMPILER INVOKED BY: D:\Keil_v5\C51\BIN\C51.EXE ..\src\common.c OPTIMIZE(8,SPEED) INCDIR(..\inc;..\..\ThunderLib) DEBUG 
-                    -OBJECTEXTEND PRINT(.\Listings\common.lst) OBJECT(.\Objects\common.obj)
+COMPILER INVOKED BY: D:\Keil_v5\C51\BIN\C51.EXE ..\src\common.c OPTIMIZE(8,SPEED) INCDIR(..\inc;..\..\ThunderLib) DEFINE
+                    -(STC_Y1,FOSC_11059200) DEBUG OBJECTEXTEND PRINT(.\Listings\common.lst) OBJECT(.\Objects\common.obj)
 
 line level    source
 
    1          #include "common.h"
    2          #include "intrins.h"
    3          
-   4          void Delay1us()         //@24.000MHz
-   5          {
-   6   1              unsigned char i;
-   7   1      
-   8   1              i = 6;
-   9   1              while (--i);
-  10   1      }
-  11          
-  12          void Delay1ms()         //@24.000MHz
-  13          {
-  14   1              unsigned char i, j;
-  15   1      
-  16   1              _nop_();
-  17   1              i = 32;
-  18   1              j = 40;
-  19   1              do
-  20   1              {
-  21   2                      while (--j);
-  22   2              } while (--i);
-  23   1      }
-  24          
-  25          
-  26          void delayus(unsigned int us)
-  27          {
-  28   1      
-  29   1              while(us--)
-  30   1              {
-  31   2                      Delay1us();
-  32   2              }
-  33   1      
-  34   1      
-  35   1      }
-  36          
-  37          void delay(unsigned int ms)
-  38          {
-  39   1              while(ms--)
-  40   1              {
-  41   2                      Delay1ms();
-  42   2              }
-  43   1      
-  44   1      }
+   4          #ifdef STC_Y6
+              
+                  #ifdef FOSC_24000000
+                      void Delay1us()         //@24.000MHz
+                      {
+                          unsigned char i;
+              
+                          i = 6;
+                          while (--i);
+                      }
+              
+                      void Delay1ms()         //@24.000MHz
+                      {
+                          unsigned char i, j;
+              
+                          _nop_();
+                          i = 32;
+                          j = 40;
+                          do
+                          {
+                              while (--j);
+                          } while (--i);
+                      }
+                  #endif
+              
+                  void delayus(unsigned int us)
+                  {
+              
+                      while(us--)
+                      {
+                          Delay1us();
+                      }
+              
+              
+                  }
+              
+                  void delay(unsigned int ms)
+                  {
+                      while(ms--)
+                      {
+                          Delay1ms();
+                      }
+              
+                  }
+              #endif
+  49          
+  50          #ifdef STC_Y1
+  51              #ifdef FOSC_11059200 
+  52                  void Delay1ms()         //@11.0592MHz
+  53                  {
+  54   1                  unsigned char i, j;
+C51 COMPILER V9.56.0.0   COMMON                                                            12/16/2018 16:27:55 PAGE 2   
+
+  55   1      
+  56   1                  _nop_();
+  57   1                  i = 2;
+  58   1                  j = 190;
+  59   1                  do
+  60   1                  {
+  61   2                      while (--j);
+  62   2                  } while (--i);
+  63   1              }
+  64          
+  65              #endif
+  66              void delay(unsigned int ms)
+  67              {
+  68   1              while(ms--)
+  69   1              {
+  70   2                  Delay1ms();
+  71   2              }
+  72   1      
+  73   1          }
+  74          
+  75              void delayus(unsigned int us)
+  76              {
+  77   1      
+  78   1              while(us--);
+  79   1      
+  80   1          }
+  81          #endif
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     55    ----
+   CODE SIZE        =     41    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
-C51 COMPILER V9.56.0.0   COMMON                                                            12/10/2018 19:39:23 PAGE 2   
-
 END OF MODULE INFORMATION.
 
 

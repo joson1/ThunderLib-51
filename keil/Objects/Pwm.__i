@@ -1,0 +1,1 @@
+"..\src\Pwm.c" OPTIMIZE (8,SPEED) INCDIR(..\inc;..\..\ThunderLib) DEFINE (STC_Y1,FOSC_11059200) DEBUG OBJECTEXTEND PRINT(.\Listings\Pwm.lst) OBJECT(.\Objects\Pwm.obj)

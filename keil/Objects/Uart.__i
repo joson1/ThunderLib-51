@@ -1,0 +1,1 @@
+"..\src\Uart.c" OPTIMIZE (8,SPEED) INCDIR(..\inc;..\..\ThunderLib) DEFINE (STC_Y1,FOSC_11059200) DEBUG OBJECTEXTEND PRINT(.\Listings\Uart.lst) OBJECT(.\Objects\Uart.obj)

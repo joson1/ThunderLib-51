@@ -309,7 +309,7 @@
             <InterruptVectorAddress>0</InterruptVectorAddress>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define></Define>
+              <Define>STC_Y1,FOSC_11059200</Define>
               <Undefine></Undefine>
               <IncludePath>..\inc;..\..\ThunderLib</IncludePath>
             </VariousControls>
